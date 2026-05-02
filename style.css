@@ -369,7 +369,7 @@ html, body {
 .alert {
   border-radius: var(--radius-sm);
   padding: 14px 16px;
-  margin-bottom: 16px;
+  margin-top: 20px;
   border: 1px solid;
   border-left-width: 4px;
 }
