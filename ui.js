@@ -2,8 +2,7 @@
 (function () {
   'use strict';
 
-  const STORAGE_KEY      = 'aspi.calorie.v1';
-  const STORAGE_KEY_MODE = 'aspi.calorie.mode.v1';
+  const STORAGE_KEY = 'aspi.calorie.v1';
 
   const DEFAULTS = {
     sex: 'M',
@@ -17,8 +16,6 @@
     goalKg: '',
     goalMonths: '',
   };
-
-  const VALID_MODES = ['edit', 'result'];
 
   const RANGES = {
     age:    { min: 1,   max: 100, step: 1   },
@@ -38,30 +35,8 @@
   function init() {
     buildActivityOptions();
     restoreState();
-    restoreMode();
     bindEvents();
     recalc();
-  }
-
-  // ---- Mode (edit / result) ----
-  function getMode() {
-    return $('#app').dataset.mode || 'edit';
-  }
-  function setMode(mode) {
-    if (!VALID_MODES.includes(mode)) mode = 'edit';
-    $('#app').dataset.mode = mode;
-    $$('.mode-toggle__btn').forEach(btn => {
-      btn.setAttribute('aria-pressed', btn.dataset.mode === mode ? 'true' : 'false');
-    });
-    try { localStorage.setItem(STORAGE_KEY_MODE, mode); } catch (_) {}
-  }
-  function restoreMode() {
-    let mode = 'edit';
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY_MODE);
-      if (raw && VALID_MODES.includes(raw)) mode = raw;
-    } catch (_) {}
-    setMode(mode);
   }
 
   function buildActivityOptions() {
@@ -110,9 +85,6 @@
     $$('input[name="sex"]').forEach(r => r.addEventListener('change', recalc));
     $$('input[name="goal"]').forEach(r => r.addEventListener('change', recalc));
     $('#reset').addEventListener('click', resetAll);
-    $$('.mode-toggle__btn').forEach(btn => {
-      btn.addEventListener('click', () => setMode(btn.dataset.mode));
-    });
   }
 
   function updateGoalBlockVisibility(goal) {
@@ -217,7 +189,6 @@
   // ---- Render ----
   function renderEmpty() {
     $('#result').classList.add('result--empty');
-    $('#hero').innerHTML = '';
     $('#goalCard').innerHTML = '';
     $('#alerts').innerHTML = '';
     $('#numbers').innerHTML = '<p class="placeholder">入力を完了してください</p>';
@@ -228,33 +199,11 @@
 
   function renderResult(state, r, alerts, goalPlan, mode) {
     $('#result').classList.remove('result--empty');
-    renderHero(state, r, mode, goalPlan);
     renderGoalCard(state, goalPlan);
     renderAlerts(alerts);
     renderNumbers(state, r, mode);
     renderPFC(r.pfc, r.target);
     renderRationale(state, mode, goalPlan);
-  }
-
-  function renderHero(state, r, mode, plan) {
-    const goal = Calc.GOALS[state.goal];
-    let subParts = [
-      `基礎代謝 ${Math.round(r.bmr)}kcal`,
-      `維持 ${Math.round(r.tdee)}kcal`,
-    ];
-    if (mode === 'goal' && plan) {
-      const sign = state.goal === 'cut' ? '-' : '+';
-      subParts.push(`目標逆算 ${sign}${plan.deltaKg}kg／${plan.months}ヶ月`);
-    } else if (goal.delta !== 0) {
-      subParts.push(`${goal.label} ${goal.delta > 0 ? '+' : ''}${goal.delta}kcal`);
-    } else {
-      subParts.push('維持カロリー');
-    }
-    $('#hero').innerHTML = `
-      <p class="hero__copy">あなたに必要な1日のカロリー</p>
-      <p class="hero__big"><strong>${Math.round(r.target).toLocaleString()}</strong><span>kcal</span></p>
-      <p class="hero__sub">${subParts.join(' ・ ')}</p>
-    `;
   }
 
   function renderGoalCard(state, plan) {
@@ -337,6 +286,10 @@
     }
     $('#numbers').innerHTML = `
       <dl class="kpi">
+        <div class="kpi__row kpi__row--target">
+          <dt>あなたに必要な1日のカロリー</dt>
+          <dd><strong>${Math.round(r.target).toLocaleString()}</strong> kcal <span class="kpi__delta">${deltaStr}</span></dd>
+        </div>
         <div class="kpi__row">
           <dt>基礎代謝 (BMR)</dt>
           <dd><strong>${Math.round(r.bmr)}</strong> kcal</dd>
@@ -344,10 +297,6 @@
         <div class="kpi__row">
           <dt>維持カロリー (TDEE)</dt>
           <dd><strong>${Math.round(r.tdee)}</strong> kcal</dd>
-        </div>
-        <div class="kpi__row kpi__row--target">
-          <dt>目標カロリー</dt>
-          <dd><strong>${Math.round(r.target)}</strong> kcal <span class="kpi__delta">${deltaStr}</span></dd>
         </div>
         <div class="kpi__row kpi__row--sub">
           <dt>BMI（参考）</dt>

@@ -8,16 +8,12 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="app" id="app" data-mode="edit">
+  <div class="app">
     <header class="header">
       <img class="header__logo" src="aspi-logo.png" alt="ASPI" />
       <div class="header__text">
         <h1 class="header__title">カロリー＆PFC計算機</h1>
         <p class="header__sub">あなたに必要な1日のカロリーを算出します</p>
-      </div>
-      <div class="mode-toggle" role="group" aria-label="表示モード">
-        <button class="mode-toggle__btn" data-mode="edit" aria-pressed="true" type="button">入力</button>
-        <button class="mode-toggle__btn" data-mode="result" aria-pressed="false" type="button">結果</button>
       </div>
     </header>
 
@@ -89,7 +85,6 @@
       <!-- 結果エリア -->
       <section class="card" id="result" aria-label="計算結果">
         <h2 class="card__title">結果</h2>
-        <div id="hero" class="hero" aria-live="polite"></div>
         <div id="goalCard"></div>
         <div id="alerts"></div>
         <div id="numbers"></div>
