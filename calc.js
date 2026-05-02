@@ -91,22 +91,22 @@
       targetFromGoal = tdee - perDay;
       if (perDay > cutDailyMaxCaution) {
         verdict = 'discouraged';
-        reasons.push(`1日赤字 ${Math.round(perDay)}kcal は週減量${weeklyPct.toFixed(2)}%（${weeklyKg.toFixed(2)}kg/週）で、推奨上限「週1%」を大きく超過。筋分解亢進・代謝低下リスク（p.77）。`);
+        reasons.push(`1日赤字 ${Math.round(perDay)}kcal は週減量${weeklyPct.toFixed(2)}%（${weeklyKg.toFixed(2)}kg/週）で、推奨上限「週1%」を大きく超過。筋分解亢進・代謝低下のリスクがあります。`);
       } else if (perDay > cutDailyMaxRecommended) {
         verdict = 'caution';
-        reasons.push(`1日赤字 ${Math.round(perDay)}kcal は週減量${weeklyPct.toFixed(2)}% で推奨ライン（週1%）をわずかに超過。期間を伸ばすか目標を緩和すると安全（p.77）。`);
+        reasons.push(`1日赤字 ${Math.round(perDay)}kcal は週減量${weeklyPct.toFixed(2)}% で推奨ライン（週1%）をわずかに超過。期間を伸ばすか目標を緩和すると安全です。`);
       } else if (perDay < weight * 3) {
         verdict = 'caution';
-        reasons.push(`1日赤字 ${Math.round(perDay)}kcal は緩やか過ぎて体感成果が出にくい可能性。期間短縮または目標増量も検討。`);
+        reasons.push(`1日赤字 ${Math.round(perDay)}kcal は緩やか過ぎて体感成果が出にくい可能性。期間短縮または目標増量も検討してください。`);
       }
     } else {
       targetFromGoal = tdee + perDay;
       if (perDay > bulkDailyMaxCaution) {
         verdict = 'discouraged';
-        reasons.push(`1日黒字 ${Math.round(perDay)}kcal は推奨上限+500kcalを大きく超過。+500kcal以上では筋肥大効果が頭打ちで脂肪蓄積優位（p.77）。`);
+        reasons.push(`1日黒字 ${Math.round(perDay)}kcal は推奨上限+500kcalを大きく超過。+500kcal以上では筋肥大効果が頭打ちで脂肪蓄積優位になります。`);
       } else if (perDay > bulkDailyMaxRecommended) {
         verdict = 'caution';
-        reasons.push(`1日黒字 ${Math.round(perDay)}kcal は推奨上限+500kcalを超過。期間を延ばすと筋肥大効率が改善（p.77）。`);
+        reasons.push(`1日黒字 ${Math.round(perDay)}kcal は推奨上限+500kcalを超過。期間を延ばすと筋肥大効率が改善します。`);
       }
     }
 
