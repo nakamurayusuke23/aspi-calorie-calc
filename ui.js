@@ -220,7 +220,7 @@
     const direction = state.goal === 'cut' ? '減量' : '増量';
     const sign = state.goal === 'cut' ? '-' : '+';
     const reasonsHtml = plan.reasons.length === 0
-      ? '<li>エビデンス推奨レンジ内（ニュートリションコーチ p.77）</li>'
+      ? '<li>推奨レンジ内のペースです</li>'
       : plan.reasons.map(r => `<li>${escapeHtml(r)}</li>`).join('');
 
     wrap.innerHTML = `
@@ -244,7 +244,6 @@
           </div>
         </div>
         <ul class="goal__reasons">${reasonsHtml}</ul>
-        <div class="goal__source">※ 体脂肪1kg=7000kcal / 週減量上限 体重×1% / 増量上限 +500kcal（ニュートリションコーチ p.77〜78）</div>
       </div>
     `;
   }
@@ -268,7 +267,6 @@
       <div class="${cls}" role="alert">
         <div class="alert__head">${label}</div>
         <ul class="alert__list">${items}</ul>
-        <div class="alert__source">※ ${AlertEngine.SOURCE}</div>
       </div>
     `;
   }

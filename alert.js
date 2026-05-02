@@ -42,7 +42,7 @@
         id: 'A3',
         level: 'warn',
         text: '増量ペースが速めです。+500kcalを超えると筋肉より脂肪が増えやすくなります。',
-        detail: `+${Math.round(target - tdee)}kcal（推奨上限 +500kcal、p.77）`,
+        detail: `+${Math.round(target - tdee)}kcal（推奨上限 +500kcal）`,
       });
     }
 
@@ -55,7 +55,7 @@
           id: 'A4',
           level: 'warn',
           text: '減量ペースが速めです。週に体重1%以上を落とすと、脂肪より先に筋肉が落ちやすくなります。',
-          detail: `1日赤字 ${Math.round(deficit)}kcal > 体重×11kcal（${Math.round(limit)}kcal、p.77）`,
+          detail: `1日赤字 ${Math.round(deficit)}kcal > 体重×11kcal（${Math.round(limit)}kcal）`,
         });
       }
     }
