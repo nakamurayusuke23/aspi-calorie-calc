@@ -11,8 +11,8 @@
     weight: '',
     activity: 1.5,
     goal: 'maintain',
-    pCoef: 2.0,
-    cRatio: 0.5,
+    pCoef: 1.6,
+    cRatio: 0.55,
     goalKg: '',
     goalMonths: '',
   };
