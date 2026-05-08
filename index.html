@@ -4,109 +4,264 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="format-detection" content="telephone=no">
-  <title>カロリー＆PFC計算機 | ASPI</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>ASPI トレーナーツール</title>
+  <link rel="icon" href="aspi-logo.png">
+  <script>
+    // Tailwind preflight を無効化（カロリー計算機の vanilla CSS と競合させないため）
+    window.tailwind = window.tailwind || {};
+    window.tailwind.config = { corePlugins: { preflight: false } };
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="ticket-styles.css">
 </head>
 <body>
-  <div class="app">
-    <header class="header">
-      <img class="header__logo" src="aspi-logo.png" alt="ASPI" />
-      <div class="header__text">
-        <h1 class="header__title">カロリー＆PFC計算機</h1>
-        <p class="header__sub">あなたに必要な1日のカロリーを算出します</p>
+  <div class="shell">
+    <!-- ===== サイドバー ===== -->
+    <aside class="sidebar" aria-label="ツール切替">
+      <div class="sidebar__brand">
+        <img class="sidebar__logo" src="aspi-logo.png" alt="ASPI" />
       </div>
-    </header>
+      <nav class="sidebar__nav">
+        <a href="#calorie" data-tab="calorie" class="sidebar__item is-active">
+          <span class="sidebar__item-label">カロリー計算</span>
+          <span class="sidebar__item-sub">PFC・必要kcal</span>
+        </a>
+        <a href="#plan" data-tab="plan" class="sidebar__item">
+          <span class="sidebar__item-label">消化プラン</span>
+          <span class="sidebar__item-sub">いつまでに使い切るか</span>
+        </a>
+        <a href="#value" data-tab="value" class="sidebar__item">
+          <span class="sidebar__item-label">チケット価値</span>
+          <span class="sidebar__item-sub">残量の金額換算</span>
+        </a>
+      </nav>
+      <div class="sidebar__footer">© ASPIREST</div>
+    </aside>
 
-    <main class="layout">
-      <!-- 入力エリア -->
-      <section class="card card--input" aria-label="入力">
-        <h2 class="card__title">入力</h2>
+    <!-- ===== メインエリア ===== -->
+    <main class="main-area">
+      <!-- ===== タブ: カロリー計算 ===== -->
+      <section id="tab-calorie" class="tab-panel is-active" aria-label="カロリー計算機">
+        <header class="panel-header">
+          <h1 class="panel-header__title">カロリー＆PFC計算</h1>
+          <p class="panel-header__sub">あなたに必要な1日のカロリーを算出します</p>
+        </header>
 
-        <div class="field">
-          <label class="field__label">性別</label>
-          <div class="radio-group" role="radiogroup" aria-label="性別">
-            <label class="radio"><input type="radio" name="sex" value="M" checked><span>男性</span></label>
-            <label class="radio"><input type="radio" name="sex" value="F"><span>女性</span></label>
-          </div>
-        </div>
+        <div class="layout">
+          <!-- 入力エリア -->
+          <section class="card card--input" aria-label="入力">
+            <h2 class="card__title">入力</h2>
 
-        <div class="field">
-          <label class="field__label" for="age">年齢</label>
-          <input class="input" id="age" type="number" inputmode="numeric" min="1" max="100" step="1" placeholder="例: 30">
-          <span class="field__err" id="err-age"></span>
-        </div>
-
-        <div class="field">
-          <label class="field__label" for="height">身長 (cm)</label>
-          <input class="input" id="height" type="number" inputmode="decimal" min="100" max="220" step="0.1" placeholder="例: 170">
-          <span class="field__err" id="err-height"></span>
-        </div>
-
-        <div class="field">
-          <label class="field__label" for="weight">体重 (kg)</label>
-          <input class="input" id="weight" type="number" inputmode="decimal" min="30" max="200" step="0.1" placeholder="例: 65.0">
-          <span class="field__err" id="err-weight"></span>
-        </div>
-
-        <div class="field">
-          <label class="field__label" for="activity">身体活動レベル</label>
-          <select class="select" id="activity"></select>
-        </div>
-
-        <div class="field">
-          <label class="field__label">目的</label>
-          <div class="radio-group" role="radiogroup" aria-label="目的">
-            <label class="radio"><input type="radio" name="goal" value="cut"><span>減量</span></label>
-            <label class="radio"><input type="radio" name="goal" value="maintain" checked><span>維持</span></label>
-            <label class="radio"><input type="radio" name="goal" value="bulk"><span>増量</span></label>
-          </div>
-        </div>
-
-        <fieldset class="goal-block" id="goalBlock" hidden>
-          <legend class="goal-block__legend">目標から逆算（任意）</legend>
-          <p class="goal-block__hint">入力すると ±500kcal の代わりに、目標から必要な1日カロリーを逆算します。</p>
-          <div class="field-row">
-            <div class="field field--narrow">
-              <label class="field__label" for="goalKg">目標体重変化 (kg)</label>
-              <input class="input" id="goalKg" type="number" inputmode="decimal" min="0.1" max="50" step="0.1" placeholder="例: 5">
-              <span class="field__err" id="err-goalKg"></span>
+            <div class="field">
+              <label class="field__label">性別</label>
+              <div class="radio-group" role="radiogroup" aria-label="性別">
+                <label class="radio"><input type="radio" name="sex" value="M" checked><span>男性</span></label>
+                <label class="radio"><input type="radio" name="sex" value="F"><span>女性</span></label>
+              </div>
             </div>
-            <div class="field field--narrow">
-              <label class="field__label" for="goalMonths">期間 (ヶ月)</label>
-              <input class="input" id="goalMonths" type="number" inputmode="decimal" min="0.25" max="24" step="0.25" placeholder="例: 3">
-              <span class="field__err" id="err-goalMonths"></span>
-            </div>
-          </div>
-        </fieldset>
 
-        <button class="btn btn--block" id="reset" type="button">リセット</button>
+            <div class="field">
+              <label class="field__label" for="age">年齢</label>
+              <input class="input" id="age" type="number" inputmode="numeric" min="1" max="100" step="1" placeholder="例: 30">
+              <span class="field__err" id="err-age"></span>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="height">身長 (cm)</label>
+              <input class="input" id="height" type="number" inputmode="decimal" min="100" max="220" step="0.1" placeholder="例: 170">
+              <span class="field__err" id="err-height"></span>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="weight">体重 (kg)</label>
+              <input class="input" id="weight" type="number" inputmode="decimal" min="30" max="200" step="0.1" placeholder="例: 65.0">
+              <span class="field__err" id="err-weight"></span>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="activity">身体活動レベル</label>
+              <select class="select" id="activity"></select>
+            </div>
+
+            <div class="field">
+              <label class="field__label">目的</label>
+              <div class="radio-group" role="radiogroup" aria-label="目的">
+                <label class="radio"><input type="radio" name="goal" value="cut"><span>減量</span></label>
+                <label class="radio"><input type="radio" name="goal" value="maintain" checked><span>維持</span></label>
+                <label class="radio"><input type="radio" name="goal" value="bulk"><span>増量</span></label>
+              </div>
+            </div>
+
+            <fieldset class="goal-block" id="goalBlock" hidden>
+              <legend class="goal-block__legend">目標から逆算（任意）</legend>
+              <p class="goal-block__hint">入力すると ±500kcal の代わりに、目標から必要な1日カロリーを逆算します。</p>
+              <div class="field-row">
+                <div class="field field--narrow">
+                  <label class="field__label" for="goalKg">目標体重変化 (kg)</label>
+                  <input class="input" id="goalKg" type="number" inputmode="decimal" min="0.1" max="50" step="0.1" placeholder="例: 5">
+                  <span class="field__err" id="err-goalKg"></span>
+                </div>
+                <div class="field field--narrow">
+                  <label class="field__label" for="goalMonths">期間 (ヶ月)</label>
+                  <input class="input" id="goalMonths" type="number" inputmode="decimal" min="0.25" max="24" step="0.25" placeholder="例: 3">
+                  <span class="field__err" id="err-goalMonths"></span>
+                </div>
+              </div>
+            </fieldset>
+
+            <button class="btn btn--block" id="reset" type="button">リセット</button>
+          </section>
+
+          <!-- 結果エリア -->
+          <section class="card" id="result" aria-label="計算結果">
+            <h2 class="card__title">結果</h2>
+            <div id="goalCard"></div>
+            <div id="numbers"></div>
+
+            <div class="pfc-section">
+              <h3 class="pfc-section__title">PFC 内訳</h3>
+              <div id="pfc-bar"></div>
+              <div id="pfc-list"></div>
+            </div>
+
+            <div id="alerts"></div>
+
+            <div class="rationale" id="rationale"></div>
+          </section>
+        </div>
       </section>
 
-      <!-- 結果エリア -->
-      <section class="card" id="result" aria-label="計算結果">
-        <h2 class="card__title">結果</h2>
-        <div id="goalCard"></div>
-        <div id="numbers"></div>
+      <!-- ===== タブ: 消化プラン ===== -->
+      <section id="tab-plan" class="tab-panel" aria-label="消化プラン">
+        <header class="panel-header">
+          <h1 class="panel-header__title">消化プラン</h1>
+          <p class="panel-header__sub">残チケットを「いつまでに使い切れるか」を見える化</p>
+        </header>
 
-        <div class="pfc-section">
-          <h3 class="pfc-section__title">PFC 内訳</h3>
-          <div id="pfc-bar"></div>
-          <div id="pfc-list"></div>
+        <div class="bg-white rounded-2xl shadow-sm p-5 space-y-4 mb-6">
+          <h2 class="text-base font-medium text-slate-600">入力</h2>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <label class="block">
+              <span class="text-sm text-slate-600">現プラン</span>
+              <select id="A-currentPlan" class="mt-1 w-full p-3 text-base rounded-lg border border-slate-300 bg-white"></select>
+            </label>
+
+            <label class="block">
+              <span class="text-sm text-slate-600">残チケット</span>
+              <div class="flex gap-2 mt-1">
+                <input id="A-remaining" type="number" inputmode="numeric" min="0" step="30" value="0"
+                       class="flex-1 p-3 text-base rounded-lg border border-slate-300" />
+                <select id="A-remainingUnit" class="p-3 text-base rounded-lg border border-slate-300 bg-white">
+                  <option value="min">分</option>
+                  <option value="count">回</option>
+                </select>
+              </div>
+              <p id="A-remainingHelp" class="mt-1 text-xs text-slate-500">1回 = 30分</p>
+            </label>
+
+            <label class="block">
+              <span class="text-sm text-slate-600">手続き適用月</span>
+              <div class="flex gap-2 mt-1">
+                <select id="A-applyYear" class="flex-1 p-3 text-base rounded-lg border border-slate-300 bg-white"></select>
+                <select id="A-applyMonth" class="flex-1 p-3 text-base rounded-lg border border-slate-300 bg-white"></select>
+              </div>
+              <p class="mt-1 text-xs text-slate-500">プラン切替を始める月</p>
+            </label>
+
+            <label class="block">
+              <span class="text-sm text-slate-600">月あたり通うペース</span>
+              <div class="flex gap-2 mt-1">
+                <input id="A-paceValue" type="number" inputmode="numeric" min="0" step="30" value="360"
+                       class="flex-1 p-3 text-base rounded-lg border border-slate-300" />
+                <select id="A-paceUnit" class="p-3 text-base rounded-lg border border-slate-300 bg-white">
+                  <option value="min">分</option>
+                  <option value="count">回</option>
+                </select>
+              </div>
+            </label>
+          </div>
+
+          <div>
+            <span class="text-sm text-slate-600">手続き後プラン候補（最大3つ比較）</span>
+            <div id="A-candidates" class="mt-2 grid grid-cols-3 sm:grid-cols-6 gap-2"></div>
+          </div>
         </div>
 
-        <div id="alerts"></div>
+        <div id="A-output" class="space-y-4">
+          <div class="bg-white rounded-2xl shadow-sm p-5">
+            <h2 class="text-base font-medium text-slate-600 mb-3">消化タイムライン</h2>
+            <div class="relative w-full" style="height: 320px;">
+              <canvas id="A-chart"></canvas>
+            </div>
+            <p class="mt-2 text-xs text-slate-500">縦軸: 残チケット（分）／横軸: 経過月（適用月＝0）</p>
+          </div>
 
-        <div class="rationale" id="rationale"></div>
+          <div id="A-cards" class="grid grid-cols-1 sm:grid-cols-3 gap-3"></div>
+        </div>
+      </section>
+
+      <!-- ===== タブ: チケットの価値 ===== -->
+      <section id="tab-value" class="tab-panel" aria-label="チケットの価値">
+        <header class="panel-header">
+          <h1 class="panel-header__title">チケットの価値</h1>
+          <p class="panel-header__sub">残量を金額換算して退会時の損失を見える化</p>
+        </header>
+
+        <div class="bg-white rounded-2xl shadow-sm p-5 space-y-4 mb-6">
+          <h2 class="text-base font-medium text-slate-600">入力</h2>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <label class="block">
+              <span class="text-sm text-slate-600">会費区分</span>
+              <select id="B-category" class="mt-1 w-full p-3 text-base rounded-lg border border-slate-300 bg-white"></select>
+            </label>
+
+            <label class="block">
+              <span class="text-sm text-slate-600">現プラン</span>
+              <select id="B-plan" class="mt-1 w-full p-3 text-base rounded-lg border border-slate-300 bg-white"></select>
+            </label>
+
+            <label class="block">
+              <span class="text-sm text-slate-600">残チケット</span>
+              <div class="flex gap-2 mt-1">
+                <input id="B-remaining" type="number" inputmode="numeric" min="0" step="30" value="0"
+                       class="flex-1 p-3 text-base rounded-lg border border-slate-300" />
+                <select id="B-remainingUnit" class="p-3 text-base rounded-lg border border-slate-300 bg-white">
+                  <option value="min">分</option>
+                  <option value="count">回</option>
+                </select>
+              </div>
+            </label>
+          </div>
+          <p id="B-feeNote" class="text-xs text-slate-500"></p>
+        </div>
+
+        <div id="B-output" class="space-y-4">
+          <div class="rounded-2xl shadow p-8 text-center bg-gradient-to-br from-slate-700 to-slate-900 text-white">
+            <p class="text-sm tracking-widest opacity-80">残っているチケットの価値</p>
+            <p id="B-amount" class="text-6xl sm:text-7xl font-semibold my-3">¥0</p>
+            <p id="B-breakdown" class="text-base opacity-90"></p>
+          </div>
+
+          <div class="text-center">
+            <button id="B-toA" class="px-5 py-3 rounded-xl border-2 border-slate-400 text-slate-700 font-medium">
+              この残量で消化計画を見る →
+            </button>
+          </div>
+        </div>
       </section>
     </main>
-
-    <footer class="footer">
-      <span class="footer__cite">© 株式会社ASPIREST</span>
-    </footer>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="calc.js"></script>
   <script src="alert.js"></script>
   <script src="ui.js"></script>
+  <script src="ticket-app.js"></script>
+  <script src="shell.js"></script>
 </body>
 </html>

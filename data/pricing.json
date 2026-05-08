@@ -1,0 +1,46 @@
+{
+  "version": "v0.4",
+  "note": "『各種サービス.pdf』(2026-03-31更新)準拠。2026年1月会費改定後の単価。会費区分4種＋プラン別料金マトリクス。単価/分はアプリ側で動的計算。",
+  "session_min": 30,
+  "categories": [
+    { "id": "normal",   "label": "通常会費",        "note": "新規入会者（改定後）" },
+    { "id": "old_2025", "label": "旧会費（〜2025）", "note": "2025年改定前所属・2026年1月改定後単価" },
+    { "id": "old_2022", "label": "旧会費（〜2022）", "note": "2022年改定前所属・2026年1月改定後単価" },
+    { "id": "special",  "label": "特別会費",        "note": "創設期所属（スタッフ配偶者・2親等以内家族）・改定後単価" }
+  ],
+  "plans": [
+    { "label": "月2",  "min_per_month": 60,   "reservation_limit": 4,
+      "fees": { "normal": 8840,   "old_2025": 8180,   "old_2022": 7180,   "special": 5820  } },
+    { "label": "月3",  "min_per_month": 90,   "reservation_limit": 6,
+      "fees": { "normal": 13260,  "old_2025": 12270,  "old_2022": 10670,  "special": 8570  } },
+    { "label": "月4",  "min_per_month": 120,  "reservation_limit": 6,
+      "fees": { "normal": 17680,  "old_2025": 16360,  "old_2022": 14160,  "special": 10780 } },
+    { "label": "月6",  "min_per_month": 180,  "reservation_limit": 8,
+      "fees": { "normal": 26520,  "old_2025": 24540,  "old_2022": 21040,  "special": 16000 } },
+    { "label": "月8",  "min_per_month": 240,  "reservation_limit": 8,
+      "fees": { "normal": 32960,  "old_2025": 30320,  "old_2022": 27820,  "special": 20900 } },
+    { "label": "月10", "min_per_month": 300,  "reservation_limit": 10,
+      "fees": { "normal": 40200,  "old_2025": 36900,  "old_2022": 34400,  "special": 25900 } },
+    { "label": "月12", "min_per_month": 360,  "reservation_limit": 12,
+      "fees": { "normal": 47640,  "old_2025": 43680,  "old_2022": 38880,  "special": 30840 } },
+    { "label": "月14", "min_per_month": 420,  "reservation_limit": 14,
+      "fees": { "normal": 54880,  "old_2025": 50260,  "old_2022": 45260,  "special": null  } },
+    { "label": "月16", "min_per_month": 480,  "reservation_limit": 16,
+      "fees": { "normal": 61120,  "old_2025": 55840,  "old_2022": 51440,  "special": 40800 } },
+    { "label": "月24", "min_per_month": 720,  "reservation_limit": 24,
+      "fees": { "normal": 89280,  "old_2025": 81360,  "old_2022": 76760,  "special": 61200 } },
+    { "label": "月36", "min_per_month": 1080, "reservation_limit": 36,
+      "fees": { "normal": 133920, "old_2025": 122040, "old_2022": 115140, "special": 91800 } },
+    { "label": "月48", "min_per_month": 1440, "reservation_limit": 48,
+      "fees": { "normal": null,   "old_2025": null,   "old_2022": null,   "special": null  } },
+    { "label": "月60", "min_per_month": 1800, "reservation_limit": 60,
+      "fees": { "normal": null,   "old_2025": null,   "old_2022": null,   "special": null  } }
+  ],
+  "additional_ticket_fee_per_30min": {
+    "normal": 4800, "old_2025": 4800, "old_2022": 4800, "special": 4800,
+    "note": "PDF p.6『追加購入料金 (30分単位)』改定後。改定前: ~2025=4,400 / ~2022=3,300 / 特別=3,300"
+  },
+  "reservation_limit_note": "月2-月36は『各種サービス.pdf』(2026-03-31更新)で確認済。月48・月60はPDF記載なし→推定値、要確認。",
+  "switch_rule_note": "回数変更の切替タイミングでは、12日（翌月枠公開日）時点で予約上限の多い方が適用される（OPルール）。",
+  "fee_data_caveats": "月14×特別会費・月48全区分・月60全区分はPDF記載なし。料金未設定プランはMode Bで選択時に『料金データなし』と表示。"
+}

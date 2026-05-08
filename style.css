@@ -39,63 +39,164 @@ html, body {
   line-height: 1.5;
 }
 
-.app {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  /* iPad/iPhoneのセーフエリア対応 */
-  padding-left: max(20px, env(safe-area-inset-left));
-  padding-right: max(20px, env(safe-area-inset-right));
+/* ---- Shell (Sidebar + Main) ---- */
+.shell {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+.sidebar {
+  background: var(--navy-deep);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 14px;
   padding-top: max(20px, env(safe-area-inset-top));
   padding-bottom: max(20px, env(safe-area-inset-bottom));
-}
-
-/* ---- Header ---- */
-.header {
-  background: var(--navy);
-  color: #fff;
-  padding: 16px 24px;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
+  padding-left: max(14px, env(safe-area-inset-left));
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100vh;
   isolation: isolate;
 }
-.header__logo {
-  height: 40px;
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 8px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 14px;
+}
+.sidebar__logo {
+  height: 36px;
   width: auto;
-  flex-shrink: 0;
   display: block;
   mix-blend-mode: screen;
   filter: contrast(1.4) brightness(0.95);
 }
 @media print {
-  .header__logo { mix-blend-mode: normal; filter: none; }
+  .sidebar__logo { mix-blend-mode: normal; filter: none; }
 }
-@media (forced-colors: active) {
-  .header__logo { mix-blend-mode: normal; filter: none; }
-}
-.header__text {
+.sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   flex: 1;
-  min-width: 0;
 }
-.header__title {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 700;
+.sidebar__item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: rgba(255,255,255,0.7);
+  font-size: 15px;
+  transition: background 0.15s ease, color 0.15s ease;
+  border-left: 3px solid transparent;
+}
+.sidebar__item:hover {
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+}
+.sidebar__item.is-active {
+  background: var(--navy-soft);
+  color: #fff;
+  border-left-color: var(--accent);
+}
+.sidebar__item-label {
+  font-weight: 600;
   letter-spacing: 0.02em;
 }
-.header__sub {
-  margin: 4px 0 0;
-  font-size: 13px;
-  opacity: 0.8;
+.sidebar__item-sub {
+  font-size: 11px;
+  opacity: 0.6;
+  letter-spacing: 0.04em;
+}
+.sidebar__footer {
+  font-size: 11px;
+  text-align: center;
+  opacity: 0.4;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  margin-top: 14px;
 }
 
-@media (max-width: 480px) {
-  .header { padding: 12px 14px; gap: 10px; }
-  .header__logo { height: 32px; }
+.main-area {
+  padding: 24px 28px;
+  padding-right: max(28px, env(safe-area-inset-right));
+  padding-top: max(24px, env(safe-area-inset-top));
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
+  max-width: 1100px;
+  width: 100%;
+}
+
+/* ---- Tab Panels ---- */
+.tab-panel { display: none; }
+.tab-panel.is-active { display: block; }
+.panel-header {
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.panel-header__title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 0.02em;
+}
+.panel-header__sub {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--text-mute);
+}
+
+/* ---- Sidebar: narrow viewports → 上部水平タブにフォールバック ---- */
+@media (max-width: 768px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    position: static;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 12px;
+    padding-top: max(10px, env(safe-area-inset-top));
+    gap: 8px;
+  }
+  .sidebar__brand {
+    border-bottom: none;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    margin: 0;
+    padding: 4px 12px 4px 4px;
+  }
+  .sidebar__logo { height: 28px; }
+  .sidebar__nav {
+    flex-direction: row;
+    flex: 1;
+    gap: 4px;
+    overflow-x: auto;
+  }
+  .sidebar__item {
+    flex: 1;
+    min-width: 100px;
+    padding: 8px 10px;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+    text-align: center;
+    align-items: center;
+  }
+  .sidebar__item.is-active {
+    border-left-color: transparent;
+    border-bottom-color: var(--accent);
+  }
+  .sidebar__item-sub { display: none; }
+  .sidebar__footer { display: none; }
+  .main-area { padding: 16px; }
+  .panel-header__title { font-size: 19px; }
 }
 
 /* ---- Layout ---- */
